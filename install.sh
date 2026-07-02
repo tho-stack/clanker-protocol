@@ -22,7 +22,7 @@ copy() { # src dst
 for s in fablegoal codex-tmux codex-adversarial-review; do
   copy "$HERE/skills/$s" "$DEST/skills/$s"
 done
-for a in deep-clanker cheap-clanker; do
+for a in deep-clanker cheap-clanker design-clanker; do
   copy "$HERE/agents/$a.md" "$DEST/agents/$a.md"
 done
 chmod +x "$DEST/skills/codex-tmux/codex-tmux.sh" 2>/dev/null || true

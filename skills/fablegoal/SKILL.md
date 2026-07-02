@@ -91,7 +91,8 @@ The Commander watches the mission live; nothing happens off the books.
 |---|---|---|
 | deep-clanker 🧠 | `Agent`, subagent_type `deep-clanker` (pinned Opus) | architecture, complex debugging, algorithm design, tradeoffs |
 | cheap-clanker 🔩 | `Agent`, subagent_type `cheap-clanker` (pinned Sonnet 5 — **not haiku**) | boilerplate, tests, formatting, simple edits, bulk mechanical work |
-| Codex 🎭 | `Skill` `codex-tmux` (goal/review/research/ask) or `codex-adversarial-review` for diffs | a cracked peer on par with deep-clanker, different perspective — design consults, second opinions, "we're stuck", adversarial diff review |
+| design-clanker 🎨 | `Workflow` single-agent `{agentType:'design-clanker', model:'fable', effort:'max'}` (pinned **Fable**; `Agent` tool can't pin effort) | code-based design & wow-craft: hero animations, 3D models, hand-built SVGs, textures, shaders, motion systems |
+| Codex 🎭 | `Skill` `codex-tmux` (goal/review/research/ask) or `codex-adversarial-review` for diffs | a cracked peer on par with deep-clanker, different perspective — design consults, second opinions, "we're stuck", adversarial diff review; `$imagegen` for generated raster imagery |
 | The Lead (you) | this session | decompose, brief clankers, integrate, verify, talk to the Commander |
 
 Dispatch rules:
@@ -99,6 +100,8 @@ Dispatch rules:
 - One owner per file when clankers run in parallel.
 - Read the actual diff a clanker produced; never trust its summary.
 - A clanker reporting "wrong clanker for this" → re-route, don't push.
+- Design implemented in code (animations, 3D, SVG, shaders, textures, motion) → design-clanker, never cheap- or deep-clanker, even when it looks mechanical. Dispatch at full power: a single-agent `Workflow` run with `{agentType: 'design-clanker', model: 'fable', effort: 'max'}` — the `Agent` tool can't pin effort.
+- Raster imagery that must be *generated* (photos, art, backdrops) → Codex `$imagegen` in a codex-tmux **workspace-write** session; the Lead authors the full art-direction prompt and harvests the file.
 - High-stakes call (irreversible, architectural, security-sensitive)? deep-clanker AND Codex in parallel, verbatim-identical problem statements, neither sees the other's answer. Synthesize the best of both; surface fundamental disagreements to the Commander.
 
 ## Phase 5 — Execute & Debrief
@@ -118,6 +121,7 @@ Loose ends: …
 - Planning or dispatching before the briefing round
 - A brief the Commander never saw
 - haiku dispatched as cheap-clanker, or invented agent types
+- Wow-work (animation/3D/SVG/texture/motion) dispatched to cheap- or deep-clanker instead of design-clanker
 - Execution without an explicit 🚀
 - A dispatch, return, or gate decision missing from the taskbar/flight recorder
 - A debrief without evidence

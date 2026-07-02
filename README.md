@@ -11,7 +11,8 @@ An orchestration kit for [Claude Code](https://claude.com/claude-code): a missio
 | **The Lead** | your Claude Code session | decompose, dispatch, integrate, verify, talk to you |
 | **deep-clanker** 🧠 | subagent pinned to Opus | architecture, complex debugging, algorithm design, tradeoffs |
 | **cheap-clanker** 🔩 | subagent pinned to Sonnet | boilerplate, tests, formatting, simple edits, bulk mechanical work |
-| **Codex** 🎭 | OpenAI Codex CLI in tmux | a cracked peer with a different perspective — design consults, second opinions, adversarial review |
+| **design-clanker** 🎨 | subagent pinned to the top-tier model, dispatched at max effort | code-based design & wow-craft: hero animations, 3D models, hand-built SVGs, textures, shaders, motion |
+| **Codex** 🎭 | OpenAI Codex CLI in tmux | a cracked peer with a different perspective — design consults, second opinions, adversarial review, `$imagegen` for generated imagery |
 
 ## How a mission runs
 
@@ -60,6 +61,7 @@ Manual install: copy `skills/*` → `~/.claude/skills/`, `agents/*` → `~/.clau
 | `skills/codex-adversarial-review/` | one-shot adversarial Codex review of a scoped diff (gpt-5.5 / xhigh, read-only) |
 | `agents/deep-clanker.md` | Opus-pinned reasoning specialist — investigates deeply, returns a decision-ready conclusion |
 | `agents/cheap-clanker.md` | Sonnet-pinned mechanical executor — exact scope, self-verifies, terse evidence |
+| `agents/design-clanker.md` | top-tier-pinned design-craft specialist — the wow lane, reduced-motion/a11y floor built in |
 | `CLAUDE-SNIPPET.md` | the always-on routing/protocol rules for your CLAUDE.md |
 
 ## Design notes
