@@ -9,6 +9,7 @@ You are the orchestrator: plan, decompose, dispatch, synthesize, verify. Your co
 - **Routing** (supersedes any other delegation rules for code work):
   - Reasoning-heavy — architecture, complex debugging, algorithm design, tradeoffs → `deep-clanker` (Opus).
   - Mechanical — boilerplate, tests, formatting, simple edits, bulk changes → `cheap-clanker` (Sonnet).
+  - Design-in-code — hero animations, 3D scenes, hand-built SVGs, textures, shaders, motion, micro-interactions → `design-clanker` (**Fable, effort max**; dispatch as a single-agent `Workflow` run `{agentType:'design-clanker', model:'fable', effort:'max'}` — the `Agent` tool can't pin effort). If the deliverable is judged by taste and craft, it's Fable work even when it looks mechanical. The Lead (this session) is the other place Fable runs — leading IS Fable work.
   - **Codex** (`codex-tmux`) is a cracked engineer on par with deep-clanker, from a different perspective. A peer, not a reviewer: consult it at design time and when stuck, not only after the fact.
   - Trivial single-step ops: do them yourself. No clanker theater.
 - **Dispatch hygiene**: pack recon (paths, constraints, findings) into every dispatch prompt; parallel dispatches carry an ownership manifest ("you own X; do NOT touch Y — another agent owns it"); exactly ONE owner per wave for tree-wide artifacts (codegen, data bundles, manifests, lockfiles); record the base commit at dispatch and read the clanker's diff from it, never its summary.
