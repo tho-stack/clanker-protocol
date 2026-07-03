@@ -104,6 +104,36 @@ Dispatch rules:
 - Raster imagery that must be *generated* (photos, art, backdrops) → Codex `$imagegen` in a codex-tmux **workspace-write** session; the Lead authors the full art-direction prompt and harvests the file.
 - High-stakes call (irreversible, architectural, security-sensitive)? deep-clanker AND Codex in parallel, verbatim-identical problem statements, neither sees the other's answer. Synthesize the best of both; surface fundamental disagreements to the Commander.
 
+## Field Manual — running parallel clankers
+
+Battle-tested on a 40-task mission with up to six concurrent lanes; every rule below is keyed to a real failure.
+
+**The dispatch contract** (every parallel dispatch prompt carries all three):
+1. **Ownership manifest** — "You own `<files/dirs>`. Do NOT touch `<X>` — another agent owns it right now." Name the concurrent lanes so the clanker can reason about its neighbors.
+2. **One regen owner per wave** — tree-wide build artifacts (codegen, data bundles, manifests, lockfiles) get exactly one writer at a time. Two lanes needing the same regen → the LEAD names the owner in both dispatch prompts (the other lane is told NOT to run it and to report stale data instead), or reserves the regen for the integration step. Designation is the lead's call at dispatch — never left for the lanes to negotiate. (Two lanes ran the shared regen concurrently: transient suite failures + a manifest hashing the other lane's uncommitted output.)
+3. **Record the base commit at dispatch** — read the clanker's work as `git diff <base>..HEAD`, never `HEAD~1`, never its summary.
+
+**Verify, don't trust:**
+- A clanker's "gates green" is a claim. Re-run the gates yourself (or have the reviewer re-run them) before acting on it. (An implementer once claimed typecheck green over a live TS error.)
+- IDE/LSP diagnostics on files a clanker is editing are noise until a fresh compile you ran confirms them. (Eleven consecutive false alarms in one mission.)
+- Suite failures in files another lane owns are shared-tree contention, not regressions. Re-verify on a quiet tree before dispatching a fix.
+
+**Steer mid-flight:**
+- `SendMessage` to a running clanker beats letting it finish wrong: drop work a parallel session already did, forward a peer's findings, add "don't repeat this defect class" notes. It applies them at its next tool round.
+- New owner requirements go into the plan/brief FILE, not just chat — in-flight workflows pick up plan addenda; chat doesn't survive compaction.
+
+**The adversarial-review loop:**
+- State the shipping bar explicitly in the review prompt. The reviewer will enforce it literally — including against you. That is the point.
+- A fix that adds or strengthens a gate/linter must ship planted self-tests for the exact escape classes found. "The gate passes" proves nothing about what it can't see.
+- Scope each round to the delta and list what's already CLOSED. Expect convergence over rounds (7→6→5→3 is healthy), not one-shot approval.
+
+**Visual-defect reports:** theory doesn't fix pixels. Reproduce with a measurement first (frame-diff, raycast, instrumented counter), name the exact element, fix, then show the same measurement after. (Two plausible z-fight theories died before one raycast found the real coplanar pair.) Leave DEV-gated diagnostic hooks in place for the next report.
+
+**Recovery:**
+- Background clankers die with the host process. On a "did not complete" notice: read `git status`/diff for partial work FIRST, then dispatch a completion task framed "keep / redo / add vs the partial state" — the dead clanker's work is a starting point, not gospel.
+- An implementer that spawned children can go idle while a child runs; the child may report to YOU. Resume the parent via `SendMessage` carrying the child's result — don't silently absorb its lane.
+- The flight recorder is the recovery map across compaction, process death, and parallel human sessions — commit it. Two sessions appending → union-merge, keep both. Divergent lineages → adjudicate by content evidence, never by which commit is newer. (The "newer" branch once carried the falsified premise.)
+
 ## Phase 5 — Execute & Debrief
 
 Parallelize disjoint work in one message. The `Workflow` tool is fair game for ≥4 same-shaped independent subtasks (invoking this skill is the user's opt-in). Verify against the Victory condition with evidence — run the thing, capture output — **before** any success claim. Append the debrief to the flight recorder (status: debriefed), then close with:
