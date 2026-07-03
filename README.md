@@ -8,11 +8,20 @@ An orchestration kit for [Claude Code](https://claude.com/claude-code): a missio
 
 | Callsign | What it is | Sends |
 |---|---|---|
-| **The Lead** | your Claude Code session | decompose, dispatch, integrate, verify, talk to you |
+| **The Lead** | your Claude Code session, on the top-tier model (Fable) | decompose, dispatch, integrate, verify, talk to you |
 | **deep-clanker** 🧠 | subagent pinned to Opus | architecture, complex debugging, algorithm design, tradeoffs |
 | **cheap-clanker** 🔩 | subagent pinned to Sonnet | boilerplate, tests, formatting, simple edits, bulk mechanical work |
-| **design-clanker** 🎨 | subagent pinned to the top-tier model, dispatched at max effort | code-based design & wow-craft: hero animations, 3D models, hand-built SVGs, textures, shaders, motion |
+| **design-clanker** 🎨 | subagent pinned to the top-tier model (Fable), dispatched at **max effort** | code-based design & wow-craft: hero animations, 3D models, hand-built SVGs, textures, shaders, motion |
 | **Codex** 🎭 | OpenAI Codex CLI in tmux | a cracked peer with a different perspective — design consults, second opinions, adversarial review, `$imagegen` for generated imagery |
+
+## Which model, when?
+
+The routing question people actually ask is "when does the *big* model run?" — the answer is **exactly two seats**:
+
+1. **The Lead.** Orchestration IS top-model work: decomposition, dispatch judgment, synthesizing conflicting agent reports, adjudicating reviewer-vs-plan disputes, and the calls where taste decides (is this finding real? is this exemption defensible?). That's why the protocol insists the Lead's context is *for leading, not grinding* — every file-dump you pull into the Lead is top-tier capacity spent on work a cheaper clanker should have summarized.
+2. **design-clanker.** Anything whose quality is judged by **taste and craft rather than correctness alone** — even when it looks mechanical. A "move this particle fade" task turned out to require computing that the particle arc's apex projected above a roofline from one specific camera angle; a "fix this flicker" report needed raycast forensics to find two surfaces 0.00 mm apart. Sonnet executes instructions; Opus reasons about them; the design lane needs the model that notices what the instructions missed. Dispatch it as a single-agent `Workflow` run (`{agentType:'design-clanker', model:'fable', effort:'max'}`) — the plain `Agent` tool can't pin effort.
+
+Everything else routes down: **judgment without aesthetics → Opus** (deep-clanker), **execution without judgment → Sonnet** (cheap-clanker), **same problem, different brain → Codex**. If you're unsure between the design lane and deep-clanker, ask what a perfect result looks like: if two correct answers could still differ in quality, it's the design lane.
 
 ## How a mission runs
 
@@ -70,6 +79,7 @@ Manual install: copy `skills/*` → `~/.claude/skills/`, `agents/*` → `~/.clau
 - **TDD'd documentation.** Built the [superpowers writing-skills](https://github.com/obra/superpowers) way: baseline (no-skill) agent simulations first to capture real failure modes — baseline agents self-scoped constraints, never rendered the brief, and guessed the wrong model for grunt work — then the skill was written against those failures and re-simulated until every checkpoint flipped.
 - **Evidence or it didn't happen.** No success claims without running the verification; debriefs carry *Casualties* and *Loose ends* sections on purpose.
 - **Peer, not reviewer.** Codex gets consulted at design time and on high-stakes calls (in parallel with deep-clanker, double-blind), not just handed diffs at the end.
+- **Field-tested, then field-manualed.** The parallel-orchestration rules (ownership manifests, single regen owner per wave, verify-don't-trust, mid-flight steering, dead-agent recovery) come from a real 40-task / six-concurrent-lane mission — each rule keyed to a failure that actually happened, then micro-tested against a no-guidance control before shipping (the control reproduced the failure 2/2; the rule prevented it 3/3).
 
 ## License
 
